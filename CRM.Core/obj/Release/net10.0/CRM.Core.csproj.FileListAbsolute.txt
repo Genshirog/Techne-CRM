@@ -1,0 +1,15 @@
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\bin\Release\net10.0\CRM.Core.deps.json
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\bin\Release\net10.0\CRM.Core.runtimeconfig.json
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\bin\Release\net10.0\CRM.Core.dll
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\bin\Release\net10.0\CRM.Core.pdb
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.csproj.AssemblyReference.cache
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.AssemblyInfoInputs.cache
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.AssemblyInfo.cs
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.csproj.CoreCompileInputs.cache
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.sourcelink.json
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.dll
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\refint\CRM.Core.dll
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.pdb
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\CRM.Core.genruntimeconfig.cache
+C:\Users\My PC\Desktop\Coding\CSharp\CRM\CRM.Core\obj\Release\net10.0\ref\CRM.Core.dll

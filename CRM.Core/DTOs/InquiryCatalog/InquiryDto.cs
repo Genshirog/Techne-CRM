@@ -1,0 +1,30 @@
+﻿using CRM.Core.Entities;
+
+namespace CRM.Core.DTOs.InquiryCatalog;
+
+public class BaseInquiryDto
+{
+    public int? CustomerId {get;set;}
+    public int? GuestId {get;set;}
+    public int? CompanyId {get;set;}
+}
+
+public class CreateInquiryDto : BaseInquiryDto
+{
+    public List<CreateInquiryItemDto> InquiryItems {get;set;} = [];
+}
+
+public class UpdateInquiryDto : BaseInquiryDto
+{
+    public InquiryStatus? Status {get;set;}
+    public List<UpdateInquiryItemDto> InquiryItems {get;set;} = [];
+}
+
+public class InquiryResponseDto : BaseInquiryDto
+{
+    public int Id {get;set;}
+    public InquiryStatus Status {get;set;}
+    public DateTime CreatedAt {get;set;}
+    public DateTime UpdatedAt {get;set;}
+    public List<InquiryItemResponseDto> InquiryItems {get;set;} = [];
+}
