@@ -135,7 +135,7 @@ public static class ServiceCollectionExtension
         // User
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        
+        services.AddScoped<ITechnicianRepository, TechnicianRepository>();
         return services;
     }
 
@@ -192,6 +192,7 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<IInquiryService, InquiryService>();
         services.AddScoped<IDiagnosisCatalogService, DiagnosisCatalogService>();
+        services.AddScoped<IInquiryTechnicalDetailService, InquiryTechnicalDetailService>();
         services.AddScoped<IChildService<InquiryItem, InquiryItemResponseDto, CreateInquiryItemDto>, InquiryItemService>();
         services.AddScoped<IChildService<InquiryTechnicalDetail, InquiryTechnicalDetailResponseDto, CreateInquiryTechnicalDetailDto>, InquiryTechnicalDetailService>();
         services.AddScoped<IChildService<InquiryDiagnosis, InquiryDiagnosisResponseDto, CreateInquiryDiagnosisDto>, InquiryDiagnosisService>();
@@ -228,6 +229,7 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<ITechnicianService, TechnicianService>();
         return services;
     }
 }

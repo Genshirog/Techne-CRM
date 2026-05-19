@@ -8,6 +8,10 @@ public class TechnicianRepository : Repository<Technician>, ITechnicianRepositor
 {
     public TechnicianRepository(AppDbContext context) : base(context){}
 
+    public override async Task<IEnumerable<Technician>> GetAllAsync()
+    {
+        return await _dbSet.Include(t => t.User).ToListAsync();
+    }
     public async Task<Technician?> GetByUserIdAsync(int userId)
     {
         return await _dbSet.Include(t => t.User).FirstOrDefaultAsync(t => t.UserId == userId);

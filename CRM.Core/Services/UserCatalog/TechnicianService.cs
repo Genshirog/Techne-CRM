@@ -8,6 +8,7 @@ namespace CRM.Core.Services.UserCatalog;
 public class TechnicianService : GeneralService<Technician, TechnicianResponseDto, CreateTechnicianDto, UpdateTechnicianDto>, ITechnicianService
 {
     private readonly ITechnicianRepository _technicianRepository;
+    
     public TechnicianService(ITechnicianRepository repository) : base(repository)
     {
         _technicianRepository = repository;
@@ -57,14 +58,18 @@ public class TechnicianService : GeneralService<Technician, TechnicianResponseDt
         IsAvailable = entity.IsAvailable,
         TotalReviews = entity.TotalReviews,
         CreatedAt = entity.CreatedAt,
-        Name = entity.User?.Name ?? string.Empty,
-        Email = entity.User?.Email ?? string.Empty,
-        PhoneNumber = entity.User?.PhoneNumber ?? string.Empty
+        User = entity.User is null ? null : new UserResponseDto
+        {
+            Id = entity.User.Id,
+            Name = entity.User.Name,
+            Email = entity.User.Email,
+            PhoneNumber = entity.User.PhoneNumber,
+        }
     };
 
     public override Technician MapToEntity(CreateTechnicianDto request) => new()
     {
         UserId = request.UserId,
-        Specialization = request.Specialization,
+        Specialization = request.Specialization
     };
 }

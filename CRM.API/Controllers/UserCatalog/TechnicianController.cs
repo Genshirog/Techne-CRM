@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.API.Controllers.UserCatalog;
 
 [ApiController]
-[Route("api/technician")]
+[Route("api/technicians")]
 public class TechnicianController(ITechnicianService service) : BaseController<TechnicianResponseDto, CreateTechnicianDto, UpdateTechnicianDto>(service)
 {
     [HttpGet("{userId}/user")]

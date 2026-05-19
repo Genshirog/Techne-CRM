@@ -10,9 +10,9 @@ public class Inquiry
     public DateTime CreatedAt {get;set;} = DateTime.UtcNow;
     public DateTime UpdatedAt {get;set;} = DateTime.UtcNow;
     public DateTime? DeletedAt {get;set;}
-    public Guest Guest {get;set;} = null!;
-    public Customer Customer {get;set;} = null!;
-    public Company Company {get;set;} = null!;
+    public Guest? Guest {get;set;} = null!;
+    public Customer? Customer {get;set;} = null!;
+    public Company? Company {get;set;} = null!;
     public ICollection<InquiryItem> InquiryItems {get;set;} = [];
 }
 

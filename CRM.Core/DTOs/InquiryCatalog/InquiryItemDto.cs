@@ -1,4 +1,5 @@
-﻿using CRM.Core.Entities;
+﻿using CRM.Core.DTOs.ServiceCatalog;
+using CRM.Core.Entities;
 
 namespace CRM.Core.DTOs.InquiryCatalog;
 
@@ -25,5 +26,6 @@ public class InquiryItemResponseDto : BaseInquiryItemDto
     public int InquiryId {get;set;}
     public DateTime CreatedAt {get;set;}
     public DateTime UpdatedAt {get;set;}
+    public ServiceCategoryResponseDto? ServiceCategory {get;set;}
     public List<InquiryTechnicalDetailResponseDto> InquiryTechnicalDetails {get;set;} = [];
 }

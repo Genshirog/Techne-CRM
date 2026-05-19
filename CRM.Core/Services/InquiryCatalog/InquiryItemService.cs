@@ -1,4 +1,5 @@
 ﻿using CRM.Core.DTOs.InquiryCatalog;
+using CRM.Core.DTOs.Users;
 using CRM.Core.Entities;
 using CRM.Core.Repositories.InquiryCatalog;
 
@@ -44,7 +45,20 @@ public class InquiryItemService : ChildService<InquiryItem, InquiryItemResponseD
     protected override InquiryItemResponseDto MapToResponse(InquiryItem entity) => new()
     {
         Id = entity.Id,
+        InquiryId = entity.InquiryId,
         InquiryTechnicalDetails = entity.InquiryTechnicalDetails?.Select(td => new InquiryTechnicalDetailResponseDto{
+            Id = td.Id,
+            TechnicianId = td.TechnicianId ?? 0,
+            Technician = td.Technician is null ? null : new TechnicianResponseDto
+            {
+                Id = td.Technician.Id,
+                UserId = td.Technician.UserId,
+                Specialization = td.Technician.Specialization,
+                AverageRating = td.Technician.AverageRating,
+                IsAvailable = td.Technician.IsAvailable,
+                TotalReviews = td.Technician.TotalReviews,
+                CreatedAt = td.Technician.CreatedAt,
+            },
             CustomerDeviceId = td.CustomerDeviceId,
             Diagnoses = td.Diagnoses?.Select(d => new InquiryDiagnosisResponseDto
             {

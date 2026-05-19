@@ -7,4 +7,5 @@ public interface IInquiryTechnicalDetailService : IChildService<InquiryTechnical
 {
     Task<IEnumerable<InquiryTechnicalDetailResponseDto>> GetByCustomerDeviceIdAsync(int customerId);
     Task<InquiryTechnicalDetailResponseDto?> GetWithDiagnosesAsync(int id);
+    Task<InquiryTechnicalDetailResponseDto> AssignTechnicianAsync(int id, AssignTechnicianDto dto);
 }

@@ -6,4 +6,5 @@ public interface IInquiryTechnicialDetailRepository : IChildRepository<InquiryTe
 {
     Task<IEnumerable<InquiryTechnicalDetail>> GetByCustomerDeviceIdAsync(int customerId);
     Task<InquiryTechnicalDetail?> GetWithDiagnosesAsync(int id);
+    Task<InquiryTechnicalDetail?> AssignTechnicianAsync(int id, int technicianId);
 }

@@ -11,47 +11,60 @@ import TableToolbar from "../../../components/common/table/TableToolbar"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Status = "New" | "Assigned" | "InDiagnosis" | "Quoted" | "Closed"
+type Status = "Pending" | "Acknowledged" | "InProgress" | "Completed" | "Cancelled"
 
 interface Inquiry {
-  id: number
+  id:           number
   customerId:   number | null
   guestId:      number | null
   companyId:    number | null
   urgency:      string
-  intakeSource: string
+  assignedTechnician:  { id: number; name: string } | null
   status:       Status
   createdAt:    string
+  customer:     { id: number; name: string; email: string } | null
   inquiryItems: {
-    serviceCategory: { name: string } | null
+    serviceCategory: {
+      name: string
+    } | null
+
+    inquiryTechnicalDetails: {
+      technician: {
+        id: number
+        user: {
+          name: string
+          email: string
+        }
+      } | null
+    }[]
   }[]
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const STATUS_TABS: { label: string; value: Status | "All" }[] = [
-  { label: "All",          value: "All" },
-  { label: "New",          value: "New" },
-  { label: "Assigned",     value: "Assigned" },
-  { label: "In Diagnosis", value: "InDiagnosis" },
-  { label: "Quoted",       value: "Quoted" },
-  { label: "Closed",       value: "Closed" },
+  { label: "All",          value: "All"          },
+  { label: "Pending",      value: "Pending"      },
+  { label: "Acknowledged", value: "Acknowledged" },
+  { label: "In Progress",  value: "InProgress"   },
+  { label: "Completed",    value: "Completed"    },
+  { label: "Cancelled",    value: "Cancelled"    },
 ]
 
 const STATUS_STYLE: Record<Status, { bg: string; color: string }> = {
-  "New":          { bg: "rgba(99,102,241,0.15)",  color: "#818cf8" },
-  "Assigned":     { bg: "rgba(245,158,11,0.15)",  color: "#fbbf24" },
-  "InDiagnosis":  { bg: "rgba(59,130,246,0.15)",  color: "#60a5fa" },
-  "Quoted":       { bg: "rgba(16,185,129,0.15)",  color: "#34d399" },
-  "Closed":       { bg: "rgba(100,116,139,0.15)", color: "#64748b" },
+  "Pending":      { bg: "rgba(99,102,241,0.15)",  color: "#818cf8" },
+  "Acknowledged": { bg: "rgba(245,158,11,0.15)",  color: "#fbbf24" },
+  "InProgress":   { bg: "rgba(59,130,246,0.15)",  color: "#60a5fa" },
+  "Completed":    { bg: "rgba(16,185,129,0.15)",  color: "#34d399" },
+  "Cancelled":    { bg: "rgba(100,116,139,0.15)", color: "#64748b" },
 }
 
 const STATUS_LABEL: Record<Status, string> = {
-  "New":         "New",
-  "Assigned":    "Assigned",
-  "InDiagnosis": "In Diagnosis",
-  "Quoted":      "Quoted",
-  "Closed":      "Closed",
+  "Pending":      "Pending",
+  "Acknowledged": "Acknowledged",
+  "InProgress":   "In Progress",
+  "Completed":    "Completed",
+  "Cancelled":    "Cancelled",
 }
 
 const PAGE_SIZE = 8
@@ -89,6 +102,14 @@ export default function AdminInquiriesPage() {
     }
   }
 
+  // ── Client label helper ────────────────────────────────────────────────────
+  const getClientName = (inq: Inquiry) => {
+    if (inq.customer?.name) return inq.customer.name
+    if (inq.guestId)        return `Guest #${inq.guestId}`
+    if (inq.companyId)      return `Company #${inq.companyId}`
+    return "—"
+  }
+
   // ── Columns ────────────────────────────────────────────────────────────────
   const columns: ColumnDef<Inquiry>[] = [
     {
@@ -100,18 +121,22 @@ export default function AdminInquiriesPage() {
       ),
     },
     {
-      label: "Client", width: "18%",
+      label: "Client", width: "20%",
       render: (inq) => (
-        <span style={{ fontSize: 13, color: "#e2e8f0" }}>
-          {inq.customerId  ? `Customer #${inq.customerId}`
-           : inq.guestId   ? `Guest #${inq.guestId}`
-           : inq.companyId ? `Company #${inq.companyId}`
-           : "—"}
-        </span>
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 500, color: "#e2e8f0" }}>
+            {getClientName(inq)}
+          </div>
+          {inq.customer?.email && (
+            <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 2 }}>
+              {inq.customer.email}
+            </div>
+          )}
+        </div>
       ),
     },
     {
-      label: "Service Category", width: "20%",
+      label: "Service Category", width: "18%",
       render: (inq) => (
         <span style={{ fontSize: 13, color: "#94a3b8" }}>
           {inq.inquiryItems?.[0]?.serviceCategory?.name ?? "—"}
@@ -119,13 +144,62 @@ export default function AdminInquiriesPage() {
       ),
     },
     {
-      label: "Source", width: "12%",
-      render: (inq) => (
-        <span style={{ fontSize: 12.5, color: "#64748b" }}>{inq.intakeSource}</span>
-      ),
+      label: "Technician",
+      width: "18%",
+      render: (inq) => {
+        const technician =
+          inq.inquiryItems?.[0]
+            ?.inquiryTechnicalDetails?.[0]
+            ?.technician
+
+        if (!technician) {
+          return (
+            <span
+              style={{
+                fontSize: 12,
+                color: "#334155",
+                fontStyle: "italic",
+              }}
+            >
+              Unassigned
+            </span>
+          )
+        }
+
+        const name = technician.user.name
+
+        return (
+          <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            <div
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: "50%",
+                background: "rgba(245,158,11,0.15)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 10,
+                fontWeight: 700,
+                color: "#fbbf24",
+                flexShrink: 0,
+              }}
+            >
+              {name
+                .split(" ")
+                .map((n: string) => n[0])
+                .join("")}
+            </div>
+
+            <span style={{ fontSize: 13, color: "#94a3b8" }}>
+              {name}
+            </span>
+          </div>
+        )
+      },
     },
     {
-      label: "Date", width: "14%",
+      label: "Date", width: "13%",
       render: (inq) => (
         <span style={{ fontSize: 13, color: "#64748b" }}>
           {new Date(inq.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
@@ -138,8 +212,8 @@ export default function AdminInquiriesPage() {
         <span style={{
           display: "inline-block", padding: "3px 10px", borderRadius: 20,
           fontSize: 11.5, fontWeight: 500,
-          background: STATUS_STYLE[inq.status]?.bg ?? "transparent",
-          color:      STATUS_STYLE[inq.status]?.color ?? "#fff",
+          background: STATUS_STYLE[inq.status]?.bg ?? "rgba(255,255,255,0.06)",
+          color:      STATUS_STYLE[inq.status]?.color ?? "#94a3b8",
         }}>
           {STATUS_LABEL[inq.status] ?? inq.status}
         </span>
@@ -177,8 +251,14 @@ export default function AdminInquiriesPage() {
     const matchTab    = activeTab === "All" || inq.status === activeTab
     const matchSearch = search === "" ||
       String(inq.id).includes(search) ||
-      inq.intakeSource.toLowerCase().includes(search.toLowerCase()) ||
-      inq.inquiryItems?.[0]?.serviceCategory?.name?.toLowerCase().includes(search.toLowerCase())
+      (inq.customer?.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (inq.customer?.email ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (
+        inq.inquiryItems?.[0]
+          ?.inquiryTechnicalDetails?.[0]
+          ?.technician?.user?.name ?? ""
+      ).toLowerCase().includes(search.toLowerCase()) ||
+      (inq.inquiryItems?.[0]?.serviceCategory?.name ?? "").toLowerCase().includes(search.toLowerCase())
     return matchTab && matchSearch
   })
 
@@ -218,14 +298,14 @@ export default function AdminInquiriesPage() {
         <TableToolbar
           search={search}
           onSearch={v => { setSearch(v); setPage(1) }}
-          placeholder="Search by ID, source, or service…"
+          placeholder="Search by name, ID, source, or service…"
         />
 
         {/* Status Tabs */}
-        <div style={{ display: "flex", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 22px" }}>
+        <div style={{ display: "flex", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 22px", overflowX: "auto" }}>
           {STATUS_TABS.map(tab => (
             <button key={tab.value} onClick={() => handleTabChange(tab.value)} style={{
-              background: "transparent", border: "none",
+              background: "transparent", border: "none", whiteSpace: "nowrap",
               borderBottom: activeTab === tab.value ? "2px solid #6366f1" : "2px solid transparent",
               padding: "12px 16px", fontSize: 13, marginBottom: -1,
               color: activeTab === tab.value ? "#818cf8" : "#64748b",

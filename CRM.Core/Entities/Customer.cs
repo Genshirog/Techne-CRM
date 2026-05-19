@@ -10,6 +10,6 @@ public class Customer
     public DateTime UpdatedAt {get;set;} = DateTime.UtcNow;
     public DateTime? DeletedAt {get;set;}
 
-    public User User {get;set;} = null!;
+    public User? User {get;set;} = null!;
     public Company? Company {get;set;}
 }

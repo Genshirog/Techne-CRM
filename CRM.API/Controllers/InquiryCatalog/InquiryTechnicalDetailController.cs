@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.API.Controllers.InquiryCatalog;
 
 [ApiController]
-[Route("api/inquiry-technicial-detail")]
+[Route("api/inquiry-technical-details")]
 public class InquiryTechnicalDetailController(IInquiryTechnicalDetailService service) : BaseChildController<InquiryTechnicalDetail, InquiryTechnicalDetailResponseDto, CreateInquiryTechnicalDetailDto>(service)
 {
     [Authorize(Roles = "Admin,SuperAdmin,Technician")]
@@ -32,5 +32,21 @@ public class InquiryTechnicalDetailController(IInquiryTechnicalDetailService ser
     {
         await service.DeleteAsync(id);
         return NoContent();
+    }
+
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    [HttpPut("{id}/assign-technician")]
+    public async Task<IActionResult> AssignTechnician(int id, AssignTechnicianDto dto)
+    {
+        var result = await service.AssignTechnicianAsync(id, dto);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    [HttpPut("{id}/reassign-technician")]
+    public async Task<IActionResult> ReAssignTechnician(int id, AssignTechnicianDto dto)
+    {
+        var result = await service.AssignTechnicianAsync(id, dto);
+        return Ok(result);
     }
 }

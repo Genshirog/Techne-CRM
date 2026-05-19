@@ -39,7 +39,7 @@ public class CustomerService : GeneralService<Customer, CustomerResponseDto, Cre
 
     public async Task<CustomerResponseDto> GetByUserIdAsync(int userId)
     {
-        var entity = await _repo.GetByIdWithUserAsync(userId) ?? throw new Exception("Not Found");
+        var entity = await _repo.GetByUserIdAsync(userId) ?? throw new Exception("Not Found");
         return MapToResponse(entity);
     }
 }

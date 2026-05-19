@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "BCrypt.Net-Next/4.2.0": {
@@ -5657,37 +5657,36 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\My PC\\.nuget\\packages\\": {}
+    "C:\\Users\\arizo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.API\\CRM.API.csproj",
+      "projectUniqueName": "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.API\\CRM.API.csproj",
       "projectName": "CRM.API",
-      "projectPath": "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.API\\CRM.API.csproj",
-      "packagesPath": "C:\\Users\\My PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.API\\obj\\",
+      "projectPath": "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.API\\CRM.API.csproj",
+      "packagesPath": "C:\\Users\\arizo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\My PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\arizo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.Core\\CRM.Core.csproj": {
-              "projectPath": "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.Core\\CRM.Core.csproj"
+            "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.Core\\CRM.Core.csproj": {
+              "projectPath": "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.Core\\CRM.Core.csproj"
             },
-            "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.Infrastructure\\CRM.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\My PC\\Desktop\\Coding\\CSharp\\CRM\\CRM.Infrastructure\\CRM.Infrastructure.csproj"
+            "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.Infrastructure\\CRM.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\arizo\\Desktop\\Coding\\CSharp\\Techne-CRM\\CRM.Infrastructure\\CRM.Infrastructure.csproj"
             }
           }
         }
@@ -5702,10 +5701,11 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
@@ -5746,7 +5746,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

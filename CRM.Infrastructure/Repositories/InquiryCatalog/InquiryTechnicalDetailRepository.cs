@@ -8,6 +8,15 @@ public class InquiryTechnicalDetailRepository : Repository<InquiryTechnicalDetai
 {
     public InquiryTechnicalDetailRepository(AppDbContext context) : base(context){}
 
+    public async Task<InquiryTechnicalDetail?> AssignTechnicianAsync(int id, int technicianId)
+    {
+        var entity = await _dbSet.Include(i => i.Technician).FirstOrDefaultAsync(i => i.Id == id);
+        if (entity is null) return null;
+        
+        entity.TechnicianId = technicianId;
+        return entity;
+    }
+
     public async Task<IEnumerable<InquiryTechnicalDetail>> GetByCustomerDeviceIdAsync(int customerId)
     {
         return await _dbSet.Where(i => i.CustomerDeviceId == customerId).ToListAsync();
@@ -22,4 +31,5 @@ public class InquiryTechnicalDetailRepository : Repository<InquiryTechnicalDetai
     {
         return await _dbSet.Include(i => i.Diagnoses).FirstOrDefaultAsync(i => i.Id == id);
     }
+
 }

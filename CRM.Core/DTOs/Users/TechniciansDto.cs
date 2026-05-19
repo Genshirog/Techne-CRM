@@ -25,8 +25,5 @@ public class TechnicianResponseDto : BaseTechniciansDto
     public double AverageRating {get;set;}
     public int TotalReviews {get;set;}
     public DateTime CreatedAt {get;set;}
-    
-    public string Name {get;set;} = string.Empty;
-    public string Email {get;set;} = string.Empty;
-    public string PhoneNumber {get;set;} = string.Empty;
+    public UserResponseDto? User {get;set;}
 }

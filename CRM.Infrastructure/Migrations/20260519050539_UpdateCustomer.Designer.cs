@@ -4,6 +4,7 @@ using CRM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260519050539_UpdateCustomer")]
+    partial class UpdateCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -687,9 +690,6 @@ namespace CRM.Infrastructure.Migrations
                     b.Property<int>("InquryItemId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TechnicianId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -698,8 +698,6 @@ namespace CRM.Infrastructure.Migrations
                     b.HasIndex("CustomerDeviceId");
 
                     b.HasIndex("InquryItemId");
-
-                    b.HasIndex("TechnicianId");
 
                     b.ToTable("InquiryTechnicalDetails");
                 });
@@ -2605,15 +2603,9 @@ namespace CRM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CRM.Core.Entities.Technician", "Technician")
-                        .WithMany()
-                        .HasForeignKey("TechnicianId");
-
                     b.Navigation("CustomerDevice");
 
                     b.Navigation("InquiryItem");
-
-                    b.Navigation("Technician");
                 });
 
             modelBuilder.Entity("CRM.Core.Entities.Invoice", b =>

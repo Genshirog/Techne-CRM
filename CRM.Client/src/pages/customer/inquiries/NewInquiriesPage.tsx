@@ -229,7 +229,7 @@ export default function CreateInquiryPage() {
 
       await api.post("/inquiries", payload)
       setSubmitted(true)
-      setTimeout(() => navigate("/inquiries"), 1500)
+      setTimeout(() => navigate("/customer/inquiries"), 1500)
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to submit inquiry.")
     } finally {

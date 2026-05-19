@@ -1,4 +1,5 @@
-﻿using CRM.Core.Entities;
+﻿using CRM.Core.DTOs.Users;
+using CRM.Core.Entities;
 
 namespace CRM.Core.DTOs.InquiryCatalog;
 
@@ -16,6 +17,7 @@ public class CreateInquiryDto : BaseInquiryDto
 
 public class UpdateInquiryDto : BaseInquiryDto
 {
+    public int Id {get;set;}
     public InquiryStatus? Status {get;set;}
     public List<UpdateInquiryItemDto> InquiryItems {get;set;} = [];
 }
@@ -26,5 +28,7 @@ public class InquiryResponseDto : BaseInquiryDto
     public InquiryStatus Status {get;set;}
     public DateTime CreatedAt {get;set;}
     public DateTime UpdatedAt {get;set;}
+    public CustomerResponseDto? Customer { get; set; }
     public List<InquiryItemResponseDto> InquiryItems {get;set;} = [];
+    
 }

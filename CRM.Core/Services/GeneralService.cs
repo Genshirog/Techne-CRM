@@ -18,7 +18,7 @@ public abstract class GeneralService<TEntity, TResponse, TCreate, TUpdate>: IGen
         return MapToResponse(entity);
     }
 
-    public async Task<IEnumerable<TResponse>> GetAllAsync()
+    public virtual async Task<IEnumerable<TResponse>> GetAllAsync()
     {
         var entities = await _repository.GetAllAsync();
         return entities.Select(MapToResponse);
