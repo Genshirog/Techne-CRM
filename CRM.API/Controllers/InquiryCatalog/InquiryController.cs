@@ -14,18 +14,20 @@ public class InquiryController(IInquiryService service) : BaseController<Inquiry
     [Authorize(Roles = "Admin,SuperAdmin,Technician")]
     [HttpGet("{customerId}/customer")]
     public async Task<IActionResult> GetByCustomerId(int customerId) => Ok(await service.GetByCustomerIdAsync(customerId));
+
+    [Authorize(Roles = "Admin,SuperAdmin,Technician")]
     [HttpGet("{guestId}/guest")]
-
-    [Authorize(Roles = "Admin,SuperAdmin,Technician")]
     public async Task<IActionResult> GetByGuestId(int guestId) => Ok(await service.GetByGuestIdAsync(guestId));
-    [HttpGet("{companyId}/company")]
 
     [Authorize(Roles = "Admin,SuperAdmin,Technician")]
+    [HttpGet("{companyId}/company")]
     public async Task<IActionResult> GetByCompanyId(int companyId) => Ok(await service.GetByCompanyIdAsync(companyId));
-    [HttpGet("{status}/inquiry-status")]
 
+    [HttpGet("{status}/inquiry-status")]
     [Authorize(Roles = "Admin,SuperAdmin,Technician")]
     public async Task<IActionResult> GetByStatus(InquiryStatus status) => Ok(await service.GetByStatusAsync(status));
+    
+    [Authorize(Roles = "Admin,SuperAdmin,Technician")]
     [HttpGet("{id}/inquiry-items")]
     public async Task<IActionResult> GetWithItems(int id) => Ok(await service.GetWithItemsAsync(id));
 

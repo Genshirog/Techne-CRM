@@ -4,6 +4,7 @@ using CRM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260520172851_ConnectingCustomerCatalog")]
+    partial class ConnectingCustomerCatalog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,6 +235,9 @@ namespace CRM.Infrastructure.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CustomerId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
@@ -252,6 +258,8 @@ namespace CRM.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("CustomerId1");
+
                     b.ToTable("CustomerAddresses");
                 });
 
@@ -267,6 +275,9 @@ namespace CRM.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CustomerId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedAt")
@@ -288,6 +299,8 @@ namespace CRM.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("CustomerId1");
 
                     b.ToTable("CustomerContacts");
                 });
@@ -349,6 +362,9 @@ namespace CRM.Infrastructure.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CustomerId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
@@ -365,31 +381,30 @@ namespace CRM.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("CustomerId1");
+
                     b.ToTable("CustomerNotes");
                 });
 
             modelBuilder.Entity("CRM.Core.Entities.CustomerTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<int>("TagId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.HasIndex("CustomerId");
+                    b.Property<int?>("TagId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomerId", "TagId");
 
                     b.HasIndex("TagId");
+
+                    b.HasIndex("TagId1");
 
                     b.ToTable("CustomerTags");
                 });
@@ -2422,10 +2437,14 @@ namespace CRM.Infrastructure.Migrations
             modelBuilder.Entity("CRM.Core.Entities.CustomerAddress", b =>
                 {
                     b.HasOne("CRM.Core.Entities.Customer", "Customer")
-                        .WithMany("CustomerAddresses")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CRM.Core.Entities.Customer", null)
+                        .WithMany("CustomerAddresses")
+                        .HasForeignKey("CustomerId1");
 
                     b.Navigation("Customer");
                 });
@@ -2433,10 +2452,14 @@ namespace CRM.Infrastructure.Migrations
             modelBuilder.Entity("CRM.Core.Entities.CustomerContact", b =>
                 {
                     b.HasOne("CRM.Core.Entities.Customer", "Customer")
-                        .WithMany("CustomerContacts")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CRM.Core.Entities.Customer", null)
+                        .WithMany("CustomerContacts")
+                        .HasForeignKey("CustomerId1");
 
                     b.Navigation("Customer");
                 });
@@ -2469,10 +2492,14 @@ namespace CRM.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("CRM.Core.Entities.Customer", "Customer")
-                        .WithMany("CustomerNotes")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CRM.Core.Entities.Customer", null)
+                        .WithMany("CustomerNotes")
+                        .HasForeignKey("CustomerId1");
 
                     b.Navigation("CreatedByUser");
 
@@ -2488,10 +2515,14 @@ namespace CRM.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("CRM.Core.Entities.Tag", "Tag")
-                        .WithMany("CustomerTags")
+                        .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CRM.Core.Entities.Tag", null)
+                        .WithMany("CustomerTags")
+                        .HasForeignKey("TagId1");
 
                     b.Navigation("Customer");
 

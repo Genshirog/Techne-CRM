@@ -1,4 +1,6 @@
-﻿namespace CRM.Core.DTOs.Users;
+﻿using CRM.Core.DTOs.CustomerCatalog;
+
+namespace CRM.Core.DTOs.Users;
 
 public class BaseCustomerDto
 {
@@ -22,4 +24,8 @@ public class CustomerResponseDto : BaseCustomerDto
     public string PhoneNumber {get;set;} = string.Empty;
     public string? CompanyName {get;set;}
     public string? CompanyEmail {get;set;}
+    public List<CustomerAddressResponseDto>? CustomerAddress {get;set;}
+    public List<CustomerContactResponseDto>? CustomerContact {get;set;}
+    public List<CustomerTagResponseDto>? CustomerTag {get;set;}
+    public List<CustomerNoteResponseDto>? CustomerNote {get;set;}
 }

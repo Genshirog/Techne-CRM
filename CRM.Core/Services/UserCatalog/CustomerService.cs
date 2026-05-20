@@ -1,4 +1,5 @@
-﻿using CRM.Core.DTOs.Users;
+﻿using CRM.Core.DTOs.CustomerCatalog;
+using CRM.Core.DTOs.Users;
 using CRM.Core.Entities;
 using CRM.Core.Repositories.UserCatalog;
 using CRM.Core.Services;
@@ -29,6 +30,37 @@ public class CustomerService : GeneralService<Customer, CustomerResponseDto, Cre
         Id = entity.Id,
         CompanyId = entity.CompanyId,
         UserId = entity.UserId,
+        Name        = entity.User?.Name ?? string.Empty,
+        Email       = entity.User?.Email ?? string.Empty,
+        PhoneNumber = entity.User?.PhoneNumber ?? string.Empty,
+
+
+        CustomerAddress = entity.CustomerAddresses?.Select(a => new CustomerAddressResponseDto
+        {
+           Id = a.Id,
+           CustomerId = a.CustomerId,
+           Label = a.Label,
+           Address = a.Address,
+           IsDefault = a.IsDefault,
+        }).ToList() ?? [],
+        CustomerContact = entity.CustomerContacts?.Select(c => new CustomerContactResponseDto
+        {
+            Id = c.Id,
+            Value = c.Value,
+            Type = c.Type,
+        }).ToList() ?? [],
+        CustomerNote = entity.CustomerNotes?.Select(n => new CustomerNoteResponseDto
+        {
+           Id = n.Id,
+           CreatedBy = n.CreatedBy,
+           Note = n.Note,
+        }).ToList() ?? [],
+        CustomerTag = entity.CustomerTags?.Select(t => new CustomerTagResponseDto
+        {
+            TagId = t.TagId,
+            TagName = t.Tag.Name,
+            TagColor = t.Tag.Color
+        }).ToList() ?? []
     };
 
     public override Customer MapToEntity(CreateCustomerDto request) => new()

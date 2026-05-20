@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.API.Controllers.CustomerCatalog;
 
 [ApiController]
-[Route("api/customer-addresss")]
+[Route("api/customer-address")]
 public class CustomerAddressController(ICustomerAddressService service) : BaseController<CustomerAddressResponseDto, CreateCustomerAddressDto, UpdateCustomerAddressDto>(service)
 {
     [Authorize(Roles = "Admin,SuperAdmin")]

@@ -23,4 +23,14 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
     {
         return await _dbSet.Include(c => c.User).Include(c => c.Company).FirstOrDefaultAsync(c => c.Id == id);
     }
+
+    public override async Task<IEnumerable<Customer>> GetAllAsync()
+    {
+        return await _dbSet.Include(c => c.User).Include(a => a.CustomerAddresses).Include(c => c.CustomerContacts).Include(n => n.CustomerNotes).Include(t => t.CustomerTags).ThenInclude(tt => tt.Tag).ToListAsync();
+    }
+
+    public override async Task<Customer?> GetByIdAsync(int id)
+    {
+        return await _dbSet.Include(c => c.User).Include(a => a.CustomerAddresses).Include(c => c.CustomerContacts).Include(n => n.CustomerNotes).Include(t => t.CustomerTags).ThenInclude(tt => tt.Tag).FirstOrDefaultAsync();
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace CRM.Core.Entities;
+﻿using CRM.Core.DTOs.CustomerCatalog;
+
+namespace CRM.Core.Entities;
 
 public class Customer
 {
@@ -12,4 +14,8 @@ public class Customer
 
     public User? User {get;set;} = null!;
     public Company? Company {get;set;}
+    public ICollection<CustomerAddress> CustomerAddresses {get;set;} = new List<CustomerAddress>();
+    public ICollection<CustomerContact> CustomerContacts {get;set;} = new List<CustomerContact>();
+    public ICollection<CustomerTag> CustomerTags {get;set;} = new List<CustomerTag>();
+    public ICollection<CustomerNote> CustomerNotes {get;set;} = new List<CustomerNote>();
 }

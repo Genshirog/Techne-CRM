@@ -18,3 +18,8 @@ public class CustomerTagResponseDto : BaseCustomerTagDto
     public string TagColor {get;set;} = string.Empty;
     public DateTime CreatedAt {get;set;}
 }
+
+public class AssignCustomerTagDto
+{
+    public int TagId {get;set;}    
+}

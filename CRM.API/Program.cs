@@ -30,6 +30,7 @@ builder.Services.AddQuotationServices();
 builder.Services.AddCustomerDeviceServices();
 builder.Services.AddCustomerSupportServices();
 builder.Services.AddUserServices();
+builder.Services.AddCustomerServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
@@ -80,6 +81,7 @@ using (var scope = app.Services.CreateScope())
     UserSeeder.Seed(db);
     DeviceCatalogSeeder.Seed(db);
     DiagnosisCatalogSeeder.Seed(db);
+    TagSeeder.Seed(db);
 }
 
 

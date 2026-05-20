@@ -144,7 +144,7 @@ public class AppDbContext : DbContext
         //CustomerContact
         modelBuilder.Entity<CustomerContact>(entity =>{
             entity.HasKey(c => c.Id);
-            entity.HasOne(c => c.Customer).WithMany().HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(c => c.Customer).WithMany(c => c.CustomerContacts).HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
             entity.Property(c => c.Type).HasMaxLength(20).IsRequired();
             entity.Property(c => c.Value).HasMaxLength(200).IsRequired();
         });
@@ -154,27 +154,28 @@ public class AppDbContext : DbContext
             entity.Property(c => c.Label).HasMaxLength(50).IsRequired();
             entity.Property(c => c.Address).HasMaxLength(200).IsRequired();
             entity.Property(c => c.IsDefault).HasDefaultValue(false);
-            entity.HasOne(c => c.Customer).WithMany().HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(c => c.Customer).WithMany(c => c.CustomerAddresses).HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
         });
         //CustomerNote
         modelBuilder.Entity<CustomerNote>(entity =>{
             entity.HasKey(c => c.Id);
             entity.Property(c => c.Note).IsRequired();
-            entity.HasOne(c => c.Customer).WithMany().HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(c => c.Customer).WithMany(c => c.CustomerNotes).HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(c => c.CreatedByUser).WithMany().HasForeignKey(c => c.CreatedBy).OnDelete(DeleteBehavior.Restrict);
         });
         //Tag
         modelBuilder.Entity<Tag>(entity =>{
            entity.HasKey(t => t.Id);
+           entity.Property(t => t.Id).ValueGeneratedOnAdd();
            entity.Property(t => t.Name).HasMaxLength(50).IsRequired();
            entity.Property(t => t.Color).HasMaxLength(20); 
            entity.HasIndex(t => t.Name).IsUnique();
         });
         //CustomerTag
         modelBuilder.Entity<CustomerTag>(entity =>{
-            entity.HasKey(ct => new {ct.CustomerId, ct.TagId});
-            entity.HasOne(ct => ct.Customer).WithMany().HasForeignKey(ct => ct.CustomerId).OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(ct => ct.Tag).WithMany(t => t.CustomerTags).HasForeignKey(ct => ct.TagId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasKey(ct => ct.Id);
+            entity.HasOne(ct => ct.Customer).WithMany(c => c.CustomerTags).HasForeignKey(ct => ct.CustomerId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(ct => ct.Tag).WithMany(c => c.CustomerTags).HasForeignKey(ct => ct.TagId).OnDelete(DeleteBehavior.Cascade);
 
         });
         //DeviceType

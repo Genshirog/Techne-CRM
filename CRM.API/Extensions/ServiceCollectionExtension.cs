@@ -10,6 +10,7 @@ using CRM.Core.DTOs.Users;
 using CRM.Core.Entities;
 using CRM.Core.Repositories;
 using CRM.Core.Repositories.Billing;
+using CRM.Core.Repositories.CustomerCatalog;
 using CRM.Core.Repositories.CustomerSupportandMarketing;
 using CRM.Core.Repositories.DeviceCatalog;
 using CRM.Core.Repositories.InquiryCatalog;
@@ -20,6 +21,7 @@ using CRM.Core.Repositories.ServiceCatalog;
 using CRM.Core.Repositories.UserCatalog;
 using CRM.Core.Services;
 using CRM.Core.Services.Billing;
+using CRM.Core.Services.CustomerCatalog;
 using CRM.Core.Services.CustomerSupportandMarketing;
 using CRM.Core.Services.DeviceCatalog;
 using CRM.Core.Services.InquiryCatalog;
@@ -28,8 +30,10 @@ using CRM.Core.Services.QuotationCatalog;
 using CRM.Core.Services.ServiceAgreementCatalog;
 using CRM.Core.Services.ServiceCatalog;
 using CRM.Core.Services.UserCatalog;
+using CRM.Infrastructure;
 using CRM.Infrastructure.Repositories;
 using CRM.Infrastructure.Repositories.Billing;
+using CRM.Infrastructure.Repositories.CustomerCatalog;
 using CRM.Infrastructure.Repositories.CustomerSupportandMarketing;
 using CRM.Infrastructure.Repositories.DeviceCatalog;
 using CRM.Infrastructure.Repositories.InquiryCatalog;
@@ -136,6 +140,12 @@ public static class ServiceCollectionExtension
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ITechnicianRepository, TechnicianRepository>();
+
+        // Customer Data
+        services.AddScoped<ICustomerAddressRepository ,CustomerAddressRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<ICustomerNoteRepository, CustomerNoteRepository>();
+        services.AddScoped<ICustomerTagRepository, CustomerTagRepository>();
         return services;
     }
 
@@ -230,6 +240,16 @@ public static class ServiceCollectionExtension
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ITechnicianService, TechnicianService>();
+        return services;
+    }
+
+    public static IServiceCollection AddCustomerServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICustomerAddressService, CustomerAddressService>();
+        services.AddScoped<ITagService, TagService>();
+        services.AddScoped<ICustomerNoteService, CustomerNoteService>();
+        services.AddScoped<ICustomerTagService, CustomerTagService>();
+        
         return services;
     }
 }

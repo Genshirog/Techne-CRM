@@ -38,7 +38,10 @@ import AdminCampaignPage from "./pages/admin/campaign/CampaignPage";
 import AdminCampaignDetailPage from "./pages/admin/campaign/CampaignDetailPage";
 
 import AdminTechnicianPage from "./pages/admin/users/UserPage";
+
 import AdminCustomerPage from "./pages/admin/customers/CustomerPage";
+import AdminCustomerDetailPage from "./pages/admin/customers/CustomerDetailPage";
+
 import AdminBillingDashboard from "./pages/admin/reports/ReportsPage";
 import AdminInvoicesPage from "./pages/admin/invoices/InvoicePage";
 
@@ -132,7 +135,10 @@ export default function App() {
                             <Route path="/admin/campaigns/:id" element={<AdminCampaignDetailPage />}/>
                             
                             <Route path="/admin/technicians" element={<AdminTechnicianPage />}/>
+
                             <Route path="/admin/customers" element={<AdminCustomerPage />}/>
+                            <Route path="/admin/customers/:id" element={<AdminCustomerDetailPage />}/>
+
                             <Route path="/admin/reports" element={<AdminBillingDashboard />}/>
                         </Route>
                     </Route>

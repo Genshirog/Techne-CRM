@@ -211,7 +211,7 @@ export default function AdminCreateInquiryPage() {
     }
     setLoadingAddresses(true); setLoadingDevices(true)
     Promise.all([
-      api.get(`/customer-addresss/${form.customerId}/customer`),
+      api.get(`/customer-address/${form.customerId}/customer`),
       api.get(`/customer-devices/${form.customerId}/customers`),
     ]).then(([addrRes, devRes]) => {
       const addrs: CustomerAddress[] = addrRes.data

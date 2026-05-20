@@ -6,7 +6,10 @@ public class BaseCustomerNoteDto
     public string Note {get;set;} = string.Empty;
 }
 
-public class CreateCustomerNoteDto : BaseCustomerNoteDto{}
+public class CreateCustomerNoteDto : BaseCustomerNoteDto
+{
+    public int CreatedBy {get;set;}
+}
 
 public class UpdateCustomerNoteDto : BaseCustomerNoteDto
 {

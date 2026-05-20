@@ -156,10 +156,86 @@ public static class UserSeeder
         // 4. CUSTOMER PROFILES
         // ──────────────────────────────────────────────────────────────────────
 
-        context.Customers.AddRange(
-            new Customer { UserId = customer1.Id, IsPrimary = true },
-            new Customer { UserId = customer2.Id, IsPrimary = true },
-            new Customer { UserId = customer3.Id, IsPrimary = true }
+        var cust1 = new Customer { UserId = customer1.Id, IsPrimary = true };
+        var cust2 = new Customer { UserId = customer2.Id, IsPrimary = true };
+        var cust3 = new Customer { UserId = customer3.Id, IsPrimary = true };
+
+        context.Customers.AddRange(cust1, cust2, cust3);
+        context.SaveChanges();
+
+        // ──────────────────────────────────────────────────────────────────────
+        // 5. CUSTOMER ADDRESSES
+        // ──────────────────────────────────────────────────────────────────────
+
+        context.CustomerAddresses.AddRange(
+            new CustomerAddress
+            {
+                CustomerId = cust1.Id,
+                Label      = "Home",
+                Address    = customer1.Address,   // "Matina, Davao City"
+                IsDefault  = true,
+            },
+            new CustomerAddress
+            {
+                CustomerId = cust2.Id,
+                Label      = "Home",
+                Address    = customer2.Address,   // "Buhangin, Davao City"
+                IsDefault  = true,
+            },
+            new CustomerAddress
+            {
+                CustomerId = cust3.Id,
+                Label      = "Home",
+                Address    = customer3.Address,   // "Toril, Davao City"
+                IsDefault  = true,
+            }
+        );
+        context.SaveChanges();
+
+        // ──────────────────────────────────────────────────────────────────────
+        // 6. CUSTOMER CONTACTS
+        // ──────────────────────────────────────────────────────────────────────
+
+        context.CustomerContacts.AddRange(
+            // Aisha
+            new CustomerContact
+            {
+                CustomerId = cust1.Id,
+                Type       = "Phone",
+                Value      = customer1.PhoneNumber,
+            },
+            new CustomerContact
+            {
+                CustomerId = cust1.Id,
+                Type       = "Email",
+                Value      = customer1.Email,
+            },
+            // Marco
+            new CustomerContact
+            {
+                CustomerId = cust2.Id,
+                Type       = "Phone",
+                Value      = customer2.PhoneNumber,
+            },
+            new CustomerContact
+            {
+                CustomerId = cust2.Id,
+                Type       = "Email",
+                Value      = customer2.Email,
+            },
+            // Grace
+            new CustomerContact
+            {
+                CustomerId = cust3.Id,
+                Type       = "Phone",
+                Value      = customer3.PhoneNumber,
+            },
+            new CustomerContact
+            {
+                CustomerId = cust3.Id,
+                Type       = "Email",
+                Value      = customer3.Email,
+            }
         );
         context.SaveChanges();
     }
