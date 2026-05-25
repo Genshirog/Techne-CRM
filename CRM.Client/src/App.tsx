@@ -7,6 +7,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import PublicLayout from "./layouts/PublicLayout";
 import ServicesPage from "./pages/public/ServicePage";
 import AboutPage from "./pages/public/AboutPage";
+import PublicInquiryPage from "./pages/public/InquirePage";
 import AuthLayout from "./layouts/AuthLayout";
 
 import AdminLayout from "./layouts/AdminLayout";
@@ -90,13 +91,13 @@ export default function App() {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
                         <Route path="/about-us" element={<AboutPage />} />
+                        <Route path="/inquire" element={<PublicInquiryPage />} />
                     </Route>
 
                     {/*Auth*/}
                     <Route element={<AuthLayout />}>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />   
-                        <Route path="/inquire" element={<CreateInquiryPage />} />
                     </Route>
 
                     {/*Admin */}
@@ -164,7 +165,7 @@ export default function App() {
 
                             <Route path="/customer/jobs/" element={<CustomerMyJobsPage/>}/>
 
-                            <Route path="/customer/inquiries/new" element={<CreateInquiryPage/>}/>
+                            <Route path="/customer/inquiries/new" element={<PublicInquiryPage/>}/>
                             <Route path="/customer/inquiries/" element={<CustomerInquiriesPage/>}/>
                             <Route path="/customer/inquiries/:id" element={<CustomerInquiryDetailPage/>}/>
 
