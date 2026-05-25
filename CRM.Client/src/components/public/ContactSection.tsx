@@ -528,9 +528,9 @@ export default function ContactSection() {
 
               <div style={styles.infoList}>
                 {[
-                  { icon: <LocationIcon />, label: "Location", value: "Davao City, Philippines" },
-                  { icon: <EmailIcon />, label: "Email", value: "info@techne-fixer.com" },
-                  { icon: <PhoneIcon />, label: "Phone", value: "+63 123 456 7890" },
+                  { icon: <LocationIcon />, label: "Location", value: "Libby Road Baliok, Talomo Davao city, Davao City, Philippines, 8000" },
+                  { icon: <EmailIcon />, label: "Email", value: "technefixermechatronics@gmail.com" },
+                  { icon: <PhoneIcon />, label: "Phone", value: "+63 966 240 6825" },
                 ].map(({ icon, label, value }) => (
                   <div key={label} style={styles.infoItem}>
                     <div style={styles.infoIcon}>{icon}</div>
@@ -543,7 +543,7 @@ export default function ContactSection() {
               </div>
 
               <div style={styles.socialLinks}>
-                <a href="#" className="contact-social-link" aria-label="Facebook">
+                <a href="https://www.facebook.com/TechneFixer" className="contact-social-link" aria-label="Facebook">
                   <FacebookIcon />
                 </a>
               </div>
