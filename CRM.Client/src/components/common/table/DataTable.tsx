@@ -29,16 +29,16 @@ interface DataTableProps<T> {
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-
 export function DataTable<T>({
   columns,
-  data,
+  data: rawData,
   keyExtractor,
   onRowClick,
   rowProps,
   emptyMessage = "No data found.",
   emptyColSpan,
 }: DataTableProps<T>) {
+  const data = rawData.slice(0, 10);
   return (
     <table style={{ width: "100%", borderCollapse: "collapse" }}>
       {/* ── Head ── */}

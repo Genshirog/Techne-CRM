@@ -8,6 +8,7 @@ import CreateButton from "../../../components/common/buttons/CreateButton"
 import TitleComponent from "../../../components/common/header/Title"
 import { DataTable, type ColumnDef } from "../../../components/common/table/DataTable"
 import TableToolbar from "../../../components/common/table/TableToolbar"
+import { StatusTabs } from "../../../components/common/stats/StatusTab"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -302,29 +303,12 @@ export default function AdminInquiriesPage() {
         />
 
         {/* Status Tabs */}
-        <div style={{ display: "flex", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 22px", overflowX: "auto" }}>
-          {STATUS_TABS.map(tab => (
-            <button key={tab.value} onClick={() => handleTabChange(tab.value)} style={{
-              background: "transparent", border: "none", whiteSpace: "nowrap",
-              borderBottom: activeTab === tab.value ? "2px solid #6366f1" : "2px solid transparent",
-              padding: "12px 16px", fontSize: 13, marginBottom: -1,
-              color: activeTab === tab.value ? "#818cf8" : "#64748b",
-              cursor: "pointer", fontWeight: activeTab === tab.value ? 500 : 400,
-              transition: "color 150ms ease",
-            }}>
-              {tab.label}
-              {tab.value !== "All" && (
-                <span style={{
-                  marginLeft: 6, fontSize: 11, padding: "1px 6px", borderRadius: 10,
-                  background: activeTab === tab.value ? "rgba(99,102,241,0.2)" : "rgba(255,255,255,0.06)",
-                  color: activeTab === tab.value ? "#818cf8" : "#475569",
-                }}>
-                  {inquiries.filter(i => i.status === tab.value).length}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
+        <StatusTabs
+          tabs={STATUS_TABS}
+          activeTab={activeTab}
+          data={inquiries}
+          onChange={handleTabChange}
+        />
 
         <DataTable
           columns={columns}
