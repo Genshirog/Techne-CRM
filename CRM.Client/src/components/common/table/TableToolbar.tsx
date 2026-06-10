@@ -43,6 +43,7 @@ export default function TableToolbar({
           flex: 1,
           maxWidth,
           marginLeft: "auto",
+          marginRight: "12px",
         }}
       >
         <Search

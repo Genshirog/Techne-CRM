@@ -63,6 +63,7 @@ export function DataTable<T>({
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                     gap: 4,
                     cursor: col.sortable ? "pointer" : "default",
                   }}
