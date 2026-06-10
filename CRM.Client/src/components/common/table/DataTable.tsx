@@ -49,7 +49,7 @@ export function DataTable<T>({
               key={col.label ?? i}
               style={{
                 padding: "11px 22px",
-                textAlign: "left",
+                textAlign: "center",
                 width: col.width,
                 fontSize: 11,
                 fontWeight: 500,
