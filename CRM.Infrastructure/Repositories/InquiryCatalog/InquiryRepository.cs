@@ -13,6 +13,7 @@ public class InquiryRepository : Repository<Inquiry>, IInquiryRepository
     {
         return await _dbSet
             .Include(i => i.Customer).ThenInclude(c => c!.User)
+            .Include(i => i.Customer).ThenInclude(c => c!.CustomerAddresses)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.ServiceCategory)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Technician).ThenInclude(t => t!.User)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Diagnoses)
@@ -24,6 +25,7 @@ public class InquiryRepository : Repository<Inquiry>, IInquiryRepository
     {
         return await _dbSet
             .Include(i => i.Customer).ThenInclude(c => c!.User)
+            .Include(i => i.Customer).ThenInclude(c => c!.CustomerAddresses)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.ServiceCategory)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Technician).ThenInclude(t => t!.User)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Diagnoses)
