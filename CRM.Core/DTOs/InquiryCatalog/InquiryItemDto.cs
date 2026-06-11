@@ -15,7 +15,6 @@ public class BaseInquiryItemDto
 
 public class CreateInquiryItemDto : BaseInquiryItemDto
 {
-    public List<CreateInquiryTechnicalDetailDto> InquiryTechnicalDetails {get;set;} = [];
 }
 
 public class UpdateInquiryItemDto : BaseInquiryItemDto

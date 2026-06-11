@@ -33,12 +33,14 @@ public class InquiryTechnicalDetailService : ChildService<InquiryTechnicalDetail
 
     protected override InquiryTechnicalDetail MapToEntity(CreateInquiryTechnicalDetailDto dto) => new()
     {
-        CustomerDeviceId = dto.CustomerDeviceId??0,
+        CustomerDeviceId = dto.CustomerDeviceId > 0 ? dto.CustomerDeviceId : null,
         Diagnoses = dto.Diagnoses?.Select(d => new InquiryDiagnosis{
             CustomDiagnosis = d.CustomDiagnosis,
             DiagnosisCatalogId = d.DiagnosisCatalogId,
             InquiryTechnicalDetailId = d.InquiryTechnicalDetailId
         }).ToList() ?? [],
+        TechnicianId = dto.TechnicianId > 0 ? dto.TechnicianId : null,
+        InquryItemId = dto.InquiryItemId,
     };
 
     protected override InquiryTechnicalDetailResponseDto MapToResponse(InquiryTechnicalDetail entity) => new()

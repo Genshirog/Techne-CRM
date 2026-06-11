@@ -28,21 +28,13 @@ public class InquiryItemService : ChildService<InquiryItem, InquiryItemResponseD
 
     protected override InquiryItem MapToEntity(CreateInquiryItemDto dto) => new()
     {
-        InquiryTechnicalDetails = dto.InquiryTechnicalDetails?.Select(td => new InquiryTechnicalDetail{
-            CustomerDeviceId = td.CustomerDeviceId > 0 ? td.CustomerDeviceId : null,
-            Diagnoses = td.Diagnoses?.Select(d => new InquiryDiagnosis
-            {
-                CustomDiagnosis = d.CustomDiagnosis,
-                DiagnosisCatalogId = d.DiagnosisCatalogId,
-                InquiryTechnicalDetailId = d.InquiryTechnicalDetailId
-            }).ToList() ?? [],
-        }).ToList() ?? [],
         PreferredDate = dto.PreferredDate ?? DateOnly.MinValue,
         PreferredTime = dto.PreferredTime ?? TimeOnly.MinValue,
         ServiceCategoryId = dto.ServiceCategoryId,
         Urgency = dto.Urgency,
         Notes = dto.Notes,
         IssueDescription = dto.IssueDescription,
+        // ✅ No InquiryTechnicalDetails here
     };
 
     protected override InquiryItemResponseDto MapToResponse(InquiryItem entity) => new()

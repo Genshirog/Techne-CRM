@@ -58,16 +58,6 @@ public class InquiryService : GeneralService<Inquiry, InquiryResponseDto, Create
             PreferredDate = i.PreferredDate ?? DateOnly.MinValue,
             PreferredTime = i.PreferredTime ?? TimeOnly.MinValue,
             ServiceCategoryId = i.ServiceCategoryId,
-            InquiryTechnicalDetails = i.InquiryTechnicalDetails?.Select(td => new InquiryTechnicalDetail
-            {
-                CustomerDeviceId = td.CustomerDeviceId > 0 ? td.CustomerDeviceId : null,
-                Diagnoses = td.Diagnoses?.Select(d => new InquiryDiagnosis
-                {
-                    CustomDiagnosis = d.CustomDiagnosis,
-                    DiagnosisCatalogId = d.DiagnosisCatalogId,
-                    InquiryTechnicalDetailId = d.InquiryTechnicalDetailId,
-                }).ToList() ?? []
-            }).ToList() ?? []  
         }).ToList() ?? [],
     };
 
