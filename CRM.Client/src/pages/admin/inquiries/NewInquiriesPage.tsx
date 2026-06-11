@@ -243,6 +243,9 @@ export default function AdminCreateInquiryPage() {
     return Object.keys(e).length === 0
   }
 
+  const URGENCY_MAP = { Normal: 0, Urgent: 1, Flexible: 2 }
+  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) return
@@ -273,6 +276,9 @@ export default function AdminCreateInquiryPage() {
           serviceId:         form.serviceId,
           preferredDate:     form.preferredDate || null,
           preferredTime:     form.preferredTime || null,
+          issueDescription:  form.issueDescription,
+          urgency:           form.urgency,
+          notes:             form.internalNote || null,
           inquiryTechnicalDetails: (form.deviceModelId || form.customerDeviceId) ? [{
             customerDeviceId: form.customerDeviceId,
             deviceModelId:    form.deviceModelId,

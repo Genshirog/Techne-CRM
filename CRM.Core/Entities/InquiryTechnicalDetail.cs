@@ -10,7 +10,7 @@ public class InquiryTechnicalDetail
     public DateTime UpdatedAt {get;set;} = DateTime.UtcNow;
 
     public InquiryItem InquiryItem {get;set;} = null!;
-    public CustomerDevice CustomerDevice {get;set;} = null!;
+    public CustomerDevice? CustomerDevice {get;set;}
     public Technician? Technician {get;set;}
     public ICollection<InquiryDiagnosis> Diagnoses {get;set;} = [];
 }

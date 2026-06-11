@@ -11,7 +11,7 @@ namespace CRM.API.Controllers.UserCatalog;
 [Route("api/customer")]
 public class CustomerController(ICustomerService service, ICustomerTagService customerTagService, ICustomerNoteService noteService) : BaseController<CustomerResponseDto, CreateCustomerDto, UpdateCustomerDto>(service)
 {
-    [Authorize(Roles = "Admin,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Customer")]
     [HttpGet("{userId}/user")]
     public async Task<IActionResult> GetByUserId(int userId) => Ok(await service.GetByUserIdAsync(userId));
 

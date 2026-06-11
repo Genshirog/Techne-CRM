@@ -168,29 +168,50 @@ public static class UserSeeder
         // ──────────────────────────────────────────────────────────────────────
 
         context.CustomerAddresses.AddRange(
-            new CustomerAddress
+        new CustomerAddress
+        {
+            CustomerId = cust1.Id,
+            Label      = "Home",
+            IsDefault  = true,
+            Address    = new Address
             {
-                CustomerId = cust1.Id,
-                Label      = "Home",
-                Address    = customer1.Address,   // "Matina, Davao City"
-                IsDefault  = true,
-            },
-            new CustomerAddress
+                Street  = "Matina",
+                City    = "Davao City",
+                State   = "Davao del Sur",
+                PostalCode = "8000",
+                Country = "PH"
+            }.Normalize()
+        },
+        new CustomerAddress
+        {
+            CustomerId = cust2.Id,
+            Label      = "Home",
+            IsDefault  = true,
+            Address    = new Address
             {
-                CustomerId = cust2.Id,
-                Label      = "Home",
-                Address    = customer2.Address,   // "Buhangin, Davao City"
-                IsDefault  = true,
-            },
-            new CustomerAddress
+                Street  = "Buhangin",
+                City    = "Davao City",
+                State   = "Davao del Sur",
+                PostalCode = "8000",
+                Country = "PH"
+            }.Normalize()
+        },
+        new CustomerAddress
+        {
+            CustomerId = cust3.Id,
+            Label      = "Home",
+            IsDefault  = true,
+            Address    = new Address
             {
-                CustomerId = cust3.Id,
-                Label      = "Home",
-                Address    = customer3.Address,   // "Toril, Davao City"
-                IsDefault  = true,
-            }
-        );
-        context.SaveChanges();
+                Street  = "Toril",
+                City    = "Davao City",
+                State   = "Davao del Sur",
+                PostalCode = "8000",
+                Country = "PH"
+            }.Normalize()
+        }
+    );
+    context.SaveChanges();
 
         // ──────────────────────────────────────────────────────────────────────
         // 6. CUSTOMER CONTACTS

@@ -37,11 +37,17 @@ public class CustomerService : GeneralService<Customer, CustomerResponseDto, Cre
 
         CustomerAddress = entity.CustomerAddresses?.Select(a => new CustomerAddressResponseDto
         {
-           Id = a.Id,
-           CustomerId = a.CustomerId,
-           Label = a.Label,
-           Address = a.Address,
-           IsDefault = a.IsDefault,
+            Id          = a.Id,
+            CustomerId  = a.CustomerId,
+            Label       = a.Label,
+            IsDefault   = a.IsDefault,
+            Street      = a.Address.Street,
+            Street2     = a.Address.Street2,
+            City        = a.Address.City,
+            State       = a.Address.State,
+            PostalCode  = a.Address.PostalCode,
+            Country     = a.Address.Country,
+            FullAddress = a.Address.FullAddress,
         }).ToList() ?? [],
         CustomerContact = entity.CustomerContacts?.Select(c => new CustomerContactResponseDto
         {

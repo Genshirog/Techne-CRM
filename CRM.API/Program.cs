@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
 using CRM.API.Converters;
 using CRM.API.Extensions;
 using CRM.API.Middleware;
@@ -70,6 +71,7 @@ builder.Services.AddControllers()
                 new System.Text.Json.Serialization.JsonStringEnumConverter()
             );
             options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
 
 var app = builder.Build();

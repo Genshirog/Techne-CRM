@@ -5,39 +5,62 @@ using CRM.Core.Repositories.CustomerCatalog;
 
 namespace CRM.Core.Services.CustomerCatalog;
 
-public class CustomerAddressService: GeneralService<CustomerAddress, CustomerAddressResponseDto,CreateCustomerAddressDto,UpdateCustomerAddressDto>, ICustomerAddressService
+public class CustomerAddressService : GeneralService<CustomerAddress, CustomerAddressResponseDto, CreateCustomerAddressDto, UpdateCustomerAddressDto>, ICustomerAddressService
 {
     private readonly ICustomerAddressRepository _repo;
 
-    public CustomerAddressService(ICustomerAddressRepository repository) : base(repository){
+    public CustomerAddressService(ICustomerAddressRepository repository) : base(repository)
+    {
         _repo = repository;
     }
 
     public override CustomerAddress MapToEntity(CreateCustomerAddressDto request) => new()
     {
         CustomerId = request.CustomerId,
-        Address = request.Address,
-        IsDefault = request.IsDefault,
-        Label = request.Label
+        Label      = request.Label,
+        IsDefault  = request.IsDefault,
+        Address    = new Address
+        {
+            Street     = request.Street,
+            Street2    = request.Street2,
+            City       = request.City,
+            State      = request.State,
+            PostalCode = request.PostalCode,
+            Country    = request.Country
+        }.Normalize()
     };
 
     public override CustomerAddressResponseDto MapToResponse(CustomerAddress entity) => new()
     {
-        Id = entity.Id,
-        CustomerId = entity.CustomerId,
-        Address = entity.Address,
-        IsDefault = entity.IsDefault,
-        Label = entity.Label
+        Id          = entity.Id,
+        CustomerId  = entity.CustomerId,
+        Label       = entity.Label,
+        IsDefault   = entity.IsDefault,
+        Street      = entity.Address.Street,
+        Street2     = entity.Address.Street2,
+        City        = entity.Address.City,
+        State       = entity.Address.State,
+        PostalCode  = entity.Address.PostalCode,
+        Country     = entity.Address.Country,
+        FullAddress = entity.Address.FullAddress
     };
 
     public override async Task<CustomerAddressResponseDto> UpdateAsync(UpdateCustomerAddressDto request)
     {
-        var customer = await _repo.GetByIdAsync(request.Id) ?? throw new Exception($"Company {request.Id} not found.");
+        var customer = await _repo.GetByIdAsync(request.Id) ?? throw new Exception($"Address {request.Id} not found.");
 
         customer.CustomerId = request.CustomerId;
-        customer.Address = request.Address;
-        customer.IsDefault = request.IsDefault;
-        customer.Label = request.Label;
+        customer.Label      = request.Label;
+        customer.IsDefault  = request.IsDefault;
+        customer.Address    = new Address
+        {
+            Street     = request.Street,
+            Street2    = request.Street2,
+            City       = request.City,
+            State      = request.State,
+            PostalCode = request.PostalCode,
+            Country    = request.Country
+        }.Normalize();
 
         _repo.Update(customer);
         await _repo.SaveChangesAsync();
