@@ -49,7 +49,13 @@ public class InquiryService : GeneralService<Inquiry, InquiryResponseDto, Create
     {
         CompanyId = request.CompanyId,
         CustomerId = request.CustomerId,
-        GuestId = request.GuestId,
+        GuestId = request.Guest is not null ? null : request.GuestId,
+        Guest = request.Guest is not null ? new Guest
+        {
+            Name = request.Guest.Name,
+            Email = request.Guest.Email,
+            PhoneNumber = request.Guest.PhoneNumber,
+        } : null,
         InquiryItems = request.InquiryItems?.Select(i => new InquiryItem
         {
             IssueDescription = i.IssueDescription,
@@ -123,6 +129,13 @@ public class InquiryService : GeneralService<Inquiry, InquiryResponseDto, Create
             Email       = entity.Customer.User?.Email ?? "",
             PhoneNumber = entity.Customer.User?.PhoneNumber ?? "",
         },
+        Guest = entity.Guest is null ? null : new GuestResponseDto
+        {
+            Id          = entity.Guest.Id,
+            Name        = entity.Guest.Name ?? "",
+            Email       = entity.Guest.Email ?? "",
+            PhoneNumber = entity.Guest.PhoneNumber ?? "",
+        }
     };
 
     public override async Task<InquiryResponseDto> UpdateAsync(UpdateInquiryDto request)

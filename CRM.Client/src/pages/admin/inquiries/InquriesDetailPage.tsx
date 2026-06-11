@@ -37,6 +37,12 @@ interface InquiryDetail {
     email: string
     phoneNumber: string
   } | null
+  guest: {
+    id: number
+    name: string
+    email: string
+    phoneNumber: string
+  } | null
   inquiryItems: {
     id: number
     serviceCategoryId: number | null
@@ -551,6 +557,27 @@ export default function AdminInquiryDetailPage() {
                   <InfoRow icon={<Mail  size={13} color="#818cf8" />} label="Email"   value={inq.customer.email}       small />
                   <InfoRow icon={<Phone size={13} color="#818cf8" />} label="Phone"   value={inq.customer.phoneNumber} small />
                   <InfoRow icon={<MapPin size={13} color="#818cf8" />} label="Address" value={inq.serviceAddress || "—"} small />
+                </div>
+              </>
+            ) : inq.guest ? (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "16px 0 18px" }}>
+                  <div style={{
+                    width: 42, height: 42, borderRadius: "50%",
+                    background: "rgba(245,158,11,0.2)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 15, fontWeight: 700, color: "#fbbf24", flexShrink: 0,
+                  }}>
+                    {inq.guest.name.split(" ").map(n => n[0]).join("")}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: "#f1f5f9" }}>{inq.guest.name}</div>
+                    <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>Walk-in / Guest</div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
+                  <InfoRow icon={<Mail  size={13} color="#fbbf24" />} label="Email"   value={inq.guest.email || "—"}       small />
+                  <InfoRow icon={<Phone size={13} color="#fbbf24" />} label="Phone"   value={inq.guest.phoneNumber || "—"} small />
                 </div>
               </>
             ) : (

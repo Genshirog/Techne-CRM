@@ -24,6 +24,7 @@ interface Inquiry {
   status:       Status
   createdAt:    string
   customer:     { id: number; name: string; email: string } | null
+  guest:        { id: number; name: string; email: string; phoneNumber: string} | null
   inquiryItems: {
     serviceCategory: {
       name: string
@@ -106,7 +107,7 @@ export default function AdminInquiriesPage() {
   // ── Client label helper ────────────────────────────────────────────────────
   const getClientName = (inq: Inquiry) => {
     if (inq.customer?.name) return inq.customer.name
-    if (inq.guestId)        return `Guest #${inq.guestId}`
+    if (inq.guest?.name)        return inq.guest.name
     if (inq.companyId)      return `Company #${inq.companyId}`
     return "—"
   }
@@ -128,11 +129,9 @@ export default function AdminInquiriesPage() {
           <div style={{ fontSize: 13, fontWeight: 500, color: "#e2e8f0" }}>
             {getClientName(inq)}
           </div>
-          {inq.customer?.email && (
-            <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 2 }}>
-              {inq.customer.email}
-            </div>
-          )}
+          <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 2 }}>
+            {inq.customer?.email ?? inq.guest?.email ?? ""}
+          </div>
         </div>
       ),
     },
@@ -254,6 +253,8 @@ export default function AdminInquiriesPage() {
       String(inq.id).includes(search) ||
       (inq.customer?.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
       (inq.customer?.email ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (inq.guest?.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (inq.guest?.email ?? "").toLowerCase().includes(search.toLowerCase()) ||
       (
         inq.inquiryItems?.[0]
           ?.inquiryTechnicalDetails?.[0]

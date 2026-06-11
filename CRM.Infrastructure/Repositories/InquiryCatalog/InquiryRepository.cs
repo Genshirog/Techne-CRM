@@ -16,6 +16,7 @@ public class InquiryRepository : Repository<Inquiry>, IInquiryRepository
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.ServiceCategory)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Technician).ThenInclude(t => t!.User)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Diagnoses)
+            .Include(i => i.Guest)
             .ToListAsync();
     }
 
@@ -26,6 +27,7 @@ public class InquiryRepository : Repository<Inquiry>, IInquiryRepository
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.ServiceCategory)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Technician).ThenInclude(t => t!.User)
             .Include(i => i.InquiryItems).ThenInclude(ii => ii.InquiryTechnicalDetails).ThenInclude(td => td.Diagnoses)
+            .Include(i => i.Guest)
             .FirstOrDefaultAsync(i => i.Id == id);
     }
 
