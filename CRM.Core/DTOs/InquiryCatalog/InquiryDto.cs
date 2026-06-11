@@ -12,6 +12,7 @@ public class BaseInquiryDto
 
 public class CreateInquiryDto : BaseInquiryDto
 {
+    public CreateGuestDto? Guest { get; set; }
     public List<CreateInquiryItemDto> InquiryItems {get;set;} = [];
 }
 
@@ -29,6 +30,7 @@ public class InquiryResponseDto : BaseInquiryDto
     public DateTime CreatedAt {get;set;}
     public DateTime UpdatedAt {get;set;}
     public CustomerResponseDto? Customer { get; set; }
+    public GuestResponseDto? Guest { get; set; }
     public List<InquiryItemResponseDto> InquiryItems {get;set;} = [];
     
 }

@@ -267,9 +267,11 @@ export default function AdminCreateInquiryPage() {
         assignNow:    form.assignNow,
         serviceAddress,
         ...(clientMode === "guest" && {
-          guestName:    form.guestName,
-          guestContact: form.guestContact,
-          guestEmail:   form.guestEmail,
+          guest: {
+              name:        form.guestName,
+              phoneNumber: form.guestContact,
+              email:       form.guestEmail,
+          }
         }),
         inquiryItems: [{
           serviceCategoryId: form.serviceCategoryId,

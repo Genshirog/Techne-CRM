@@ -129,7 +129,7 @@ export function DataTable<T>({
                 }}
               >
                 {columns.map((col, ci) => (
-                  <td key={ci} style={{ padding: "14px 22px" }}>
+                  <td key={ci} style={{ padding: "14px 22px", textAlign: "center" }}>
                     {col.render
                       ? col.render(row, i)
                       : col.key != null
