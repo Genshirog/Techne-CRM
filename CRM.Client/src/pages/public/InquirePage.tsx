@@ -210,9 +210,11 @@ export default function PublicInquiryPage() {
         customerId:   null,       // ← no logged-in customer
         guestId:      null,       // ← backend may create a guest record from the info below
         companyId:    null,
-        guestName:    form.guestName,
-        guestEmail:   form.guestEmail,
-        guestPhone:   form.guestPhone || null,
+        guest: {                        // ✅ nested object, not flat fields
+            name:        form.guestName,
+            email:       form.guestEmail,
+            phoneNumber: form.guestPhone || null,
+        },
         urgency:      form.urgency,
         intakeSource: form.intakeSource || "Online",
         serviceAddress,
@@ -232,7 +234,7 @@ export default function PublicInquiryPage() {
         }],
       }
 
-      await api.post("/inquiries/guest", payload)   // ← separate guest endpoint
+      await api.post("/inquiries", payload)   // ← separate guest endpoint
       setSubmitted(true)
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to submit inquiry.")

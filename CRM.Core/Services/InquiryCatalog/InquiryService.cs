@@ -74,6 +74,10 @@ public class InquiryService : GeneralService<Inquiry, InquiryResponseDto, Create
         CompanyId = entity.CompanyId,
         CustomerId = entity.CustomerId,
         GuestId = entity.GuestId,
+        ServiceAddress = entity.Customer?
+            .CustomerAddresses?
+            .FirstOrDefault(a => a.IsDefault)?
+            .Address.FullAddress ?? "",
         InquiryItems = entity.InquiryItems?.Select(i => new InquiryItemResponseDto
         {
             Id = i.Id,

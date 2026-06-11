@@ -27,6 +27,7 @@ public class InquiryResponseDto : BaseInquiryDto
 {
     public int Id {get;set;}
     public InquiryStatus Status {get;set;}
+    public string? ServiceAddress { get; set; }
     public DateTime CreatedAt {get;set;}
     public DateTime UpdatedAt {get;set;}
     public CustomerResponseDto? Customer { get; set; }

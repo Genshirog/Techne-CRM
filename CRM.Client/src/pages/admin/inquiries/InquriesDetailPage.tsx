@@ -118,6 +118,13 @@ const fmtDate = (iso: string) =>
 const fmtDateTime = (iso: string) =>
   new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })
 
+const URGENCY_MAP: Record<number, string> = {
+  0: "Normal",
+  1: "Urgent", 
+  2: "Flexible",
+}
+
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AdminInquiryDetailPage() {
@@ -151,10 +158,8 @@ export default function AdminInquiryDetailPage() {
     api.get(`/inquiries/${id}`)
       .then(res => {
         const data: InquiryDetail = res.data
-        console.log("[InquiryDetail] full response:", data)
-        console.log("[InquiryDetail] inquiryItems:", data.inquiryItems)
-        console.log("[InquiryDetail] firstItem:", data.inquiryItems?.[0])
-        console.log("[InquiryDetail] inquiryTechnicalDetails:", data.inquiryItems?.[0]?.inquiryTechnicalDetails)
+        console.log("serviceAddress:", data.serviceAddress)
+        data.urgency = URGENCY_MAP[data.urgency as any] ?? "Normal"
         setInq(data)
         setStatus(data.status)
         setTimeline([{
@@ -778,6 +783,7 @@ export default function AdminInquiryDetailPage() {
       )}
     </div>
   )
+  
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
