@@ -8,6 +8,9 @@ public class BaseInquiryItemDto
     public int ServiceCategoryId {get;set;}
     public DateOnly? PreferredDate {get;set;}
     public TimeOnly? PreferredTime {get;set;}
+    public string IssueDescription {get;set;} = string.Empty;
+    public string? Notes {get;set;}
+    public Urgency Urgency {get;set;}
 }
 
 public class CreateInquiryItemDto : BaseInquiryItemDto

@@ -40,6 +40,9 @@ public class InquiryItemService : ChildService<InquiryItem, InquiryItemResponseD
         PreferredDate = dto.PreferredDate ?? DateOnly.MinValue,
         PreferredTime = dto.PreferredTime ?? TimeOnly.MinValue,
         ServiceCategoryId = dto.ServiceCategoryId,
+        Urgency = dto.Urgency,
+        Notes = dto.Notes,
+        IssueDescription = dto.IssueDescription,
     };
 
     protected override InquiryItemResponseDto MapToResponse(InquiryItem entity) => new()
@@ -69,6 +72,9 @@ public class InquiryItemService : ChildService<InquiryItem, InquiryItemResponseD
         }).ToList() ?? [],
         PreferredDate = entity.PreferredDate,
         PreferredTime = entity.PreferredTime,
-        ServiceCategoryId = entity.ServiceCategoryId,    
+        ServiceCategoryId = entity.ServiceCategoryId,
+        Urgency = entity.Urgency,
+        Notes = entity.Notes,
+        IssueDescription = entity.IssueDescription
     };
 }

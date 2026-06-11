@@ -52,6 +52,9 @@ public class InquiryService : GeneralService<Inquiry, InquiryResponseDto, Create
         GuestId = request.GuestId,
         InquiryItems = request.InquiryItems?.Select(i => new InquiryItem
         {
+            IssueDescription = i.IssueDescription,
+            Notes = i.Notes,
+            Urgency = i.Urgency,
             PreferredDate = i.PreferredDate ?? DateOnly.MinValue,
             PreferredTime = i.PreferredTime ?? TimeOnly.MinValue,
             ServiceCategoryId = i.ServiceCategoryId,
@@ -86,6 +89,9 @@ public class InquiryService : GeneralService<Inquiry, InquiryResponseDto, Create
             PreferredDate = i.PreferredDate,
             PreferredTime = i.PreferredTime,
             ServiceCategoryId = i.ServiceCategoryId,
+            IssueDescription = i.IssueDescription,
+            Urgency = i.Urgency,
+            Notes = i.Notes,
             InquiryTechnicalDetails = i.InquiryTechnicalDetails?.Select(td => new InquiryTechnicalDetailResponseDto
             {
                 Id = td.Id,

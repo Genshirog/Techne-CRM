@@ -49,14 +49,12 @@ interface InquiryDetail {
       id: number
       customerDeviceId: number | null
       deviceModelId: number | null
-
       technician: {
         id: number
         specialization: string
         isAvailable: boolean
         averageRating: number
         totalReviews: number
-
         user: {
           id: number
           name: string
@@ -117,8 +115,8 @@ const fmtDateTime = (iso: string) =>
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AdminInquiryDetailPage() {
-  const { id }      = useParams()
-  const navigate    = useNavigate()
+  const { id }   = useParams()
+  const navigate = useNavigate()
 
   const [inq,             setInq]             = useState<InquiryDetail | null>(null)
   const [loading,         setLoading]         = useState(true)
@@ -133,6 +131,12 @@ export default function AdminInquiryDetailPage() {
   const [assignModalOpen, setAssignModalOpen] = useState(false)
   const [selectedTechnician, setSelectedTechnician] = useState<number | null>(null)
 
+  // ── Derive early so handlers can reference them ────────────────────────────
+  const firstItem          = inq?.inquiryItems?.[0]
+  const firstDetail        = firstItem?.inquiryTechnicalDetails?.[0]
+  const assignedTechnician = firstDetail?.technician ?? null
+  const technicalDetailId  = firstDetail?.id
+
   // ── Fetch ──────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!id) return
@@ -141,6 +145,10 @@ export default function AdminInquiryDetailPage() {
     api.get(`/inquiries/${id}`)
       .then(res => {
         const data: InquiryDetail = res.data
+        console.log("[InquiryDetail] full response:", data)
+        console.log("[InquiryDetail] inquiryItems:", data.inquiryItems)
+        console.log("[InquiryDetail] firstItem:", data.inquiryItems?.[0])
+        console.log("[InquiryDetail] inquiryTechnicalDetails:", data.inquiryItems?.[0]?.inquiryTechnicalDetails)
         setInq(data)
         setStatus(data.status)
         setTimeline([{
@@ -195,46 +203,56 @@ export default function AdminInquiryDetailPage() {
     }
   }
 
-  // ── Assign Technician ──────────────────────────────────────────────────────
+  // ── Assign / Reassign Technician ───────────────────────────────────────────
   const assignTechnician = async () => {
     if (!selectedTechnician || !inq) return
 
-    const isReassign = !!assignedTechnician
+    const isReassign    = !!assignedTechnician
+    const inquiryItemId = firstItem?.id
 
-    if (!technicalDetailId) {
-      alert("No inquiry technical detail found.")
+    if (!inquiryItemId) {
+      alert("No inquiry item found.")
       return
     }
 
-
-    const endpoint = isReassign
-      ? `/inquiry-technical-details/${inq.id}/reassign-technician`
-      : `/inquiry-technical-details/${inq.id}/assign-technician`
-
     try {
-      await api.put(endpoint, { technicianId: selectedTechnician })
+      const newTechnician = technicians.find(t => t.id === selectedTechnician) ?? null
+      let newDetailId = technicalDetailId
 
+      if (isReassign) {
+        // Reassign: PUT /api/inquiry-technical-details/{technicalDetailId}/reassign-technician
+        if (!technicalDetailId) {
+          alert("No inquiry technical detail found.")
+          return
+        }
+        await api.put(`/inquiry-technical-details/${technicalDetailId}/reassign-technician`, { technicianId: selectedTechnician })
+      } else {
+        // First assign: no detail record exists yet
+        // Step 1 — create the InquiryTechnicalDetail record
+        const created = await api.post(`/inquiry-technical-details`, {
+          technicianId: selectedTechnician,
+          inquiryItemId,
+          diagnoses: [],
+        })
+        newDetailId = created.data.id
+
+        // Step 2 — assign the technician to the newly created detail
+        await api.put(`/inquiry-technical-details/${newDetailId}/assign-technician`, { technicianId: selectedTechnician })
+      }
+
+      // Optimistically update nested technician in state
       setInq(prev => {
         if (!prev) return prev
-
         return {
           ...prev,
-          inquiryItems: prev.inquiryItems.map((item, itemIndex) => {
-            if (itemIndex !== 0) return item
-
-            return {
-              ...item,
-              inquiryTechnicalDetails:
-                item.inquiryTechnicalDetails.map((detail, detailIndex) => {
-                  if (detailIndex !== 0) return detail
-
-                  return {
-                    ...detail,
-                    technician:
-                      technicians.find(t => t.id === selectedTechnician) ?? null,
-                  }
-                }),
-            }
+          inquiryItems: prev.inquiryItems.map((item, itemIdx) => {
+            if (itemIdx !== 0) return item
+            const updatedDetails = isReassign
+              ? item.inquiryTechnicalDetails.map((detail, detailIdx) =>
+                  detailIdx !== 0 ? detail : { ...detail, technician: newTechnician }
+                )
+              : [{ id: newDetailId ?? 0, customerDeviceId: null, deviceModelId: null, technician: newTechnician }]
+            return { ...item, inquiryTechnicalDetails: updatedDetails }
           }),
         }
       })
@@ -278,12 +296,6 @@ export default function AdminInquiryDetailPage() {
     </div>
   )
 
-  const firstItem = inq.inquiryItems?.[0]
-  const assignedTechnician =
-    firstItem?.inquiryTechnicalDetails?.[0]?.technician ?? null
-
-  const technicalDetailId =
-    firstItem?.inquiryTechnicalDetails?.[0]?.id
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div
@@ -573,8 +585,8 @@ export default function AdminInquiryDetailPage() {
                   </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <InfoRow icon={<Mail size={13} color="#818cf8" />}       label="Email"        value={assignedTechnician.user.email}                                              small />
-                  <InfoRow icon={<Star size={13} color="#facc15" />}       label="Rating"       value={`${assignedTechnician.averageRating.toFixed(1)} ⭐`}                        small />
+                  <InfoRow icon={<Mail size={13} color="#818cf8" />}         label="Email"        value={assignedTechnician.user.email}                      small />
+                  <InfoRow icon={<Star size={13} color="#facc15" />}         label="Rating"       value={`${assignedTechnician.averageRating.toFixed(1)} ⭐`} small />
                   <InfoRow icon={<CheckCircle2 size={13} color="#34d399" />} label="Availability" value={
                     <span style={{ color: assignedTechnician.isAvailable ? "#34d399" : "#f87171" }}>
                       {assignedTechnician.isAvailable ? "Available" : "Unavailable"}
@@ -588,6 +600,8 @@ export default function AdminInquiryDetailPage() {
                     background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)",
                     borderRadius: 8, padding: "9px", color: "#818cf8", fontSize: 13, cursor: "pointer",
                   }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(99,102,241,0.2)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(99,102,241,0.12)")}
                 >
                   Reassign Technician
                 </button>
@@ -604,6 +618,8 @@ export default function AdminInquiryDetailPage() {
                     border: "1px solid rgba(255,255,255,0.08)",
                     borderRadius: 8, padding: "8px", color: "#94a3b8", fontSize: 13, cursor: "pointer",
                   }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                 >
                   Assign Technician
                 </button>
@@ -639,17 +655,25 @@ export default function AdminInquiryDetailPage() {
 
       {/* Assign Technician Modal */}
       {assignModalOpen && (
-        <div style={{
-          position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
-          zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <div style={{
-            width: 420, background: "#1e293b", borderRadius: 14,
-            border: "1px solid rgba(255,255,255,0.08)", padding: 22,
-          }}>
+        <div
+          onClick={() => setAssignModalOpen(false)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
+            zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center",
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              width: 420, background: "#1e293b", borderRadius: 14,
+              border: "1px solid rgba(255,255,255,0.08)", padding: 22,
+            }}
+          >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
               <div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#f8fafc" }}>Assign Technician</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#f8fafc" }}>
+                  {assignedTechnician ? "Reassign Technician" : "Assign Technician"}
+                </div>
                 <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>Inquiry #{inq.id}</div>
               </div>
               <button
@@ -663,23 +687,46 @@ export default function AdminInquiryDetailPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 320, overflowY: "auto" }}>
               {techLoading ? (
                 <div style={{ color: "#64748b", fontSize: 13 }}>Loading technicians...</div>
+              ) : technicians.length === 0 ? (
+                <div style={{ color: "#64748b", fontSize: 13, fontStyle: "italic" }}>No technicians found.</div>
               ) : (
                 technicians.map(tech => {
-                  const selected = selectedTechnician === tech.id
+                  const isSelected = selectedTechnician === tech.id
+                  const isCurrent  = assignedTechnician?.id === tech.id
                   return (
                     <div
                       key={tech.id}
                       onClick={() => tech.isAvailable && setSelectedTechnician(tech.id)}
                       style={{
                         padding: "12px 14px", borderRadius: 10,
-                        border: selected ? "1px solid #6366f1" : "1px solid rgba(255,255,255,0.06)",
-                        background: selected ? "rgba(99,102,241,0.1)" : "#0f172a",
+                        border: isSelected ? "1px solid #6366f1" : "1px solid rgba(255,255,255,0.06)",
+                        background: isSelected ? "rgba(99,102,241,0.1)" : "#0f172a",
                         cursor: tech.isAvailable ? "pointer" : "not-allowed",
                         opacity: tech.isAvailable ? 1 : 0.45,
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
                       }}
                     >
-                      <div style={{ fontSize: 13.5, fontWeight: 600, color: "#f8fafc" }}>{tech.user.name}</div>
-                      <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{tech.specialization}</div>
+                      <div>
+                        <div style={{ fontSize: 13.5, fontWeight: 600, color: "#f8fafc", display: "flex", alignItems: "center", gap: 8 }}>
+                          {tech.user.name}
+                          {isCurrent && (
+                            <span style={{ fontSize: 10, fontWeight: 600, padding: "1px 7px", borderRadius: 999, background: "rgba(251,191,36,0.12)", color: "#fbbf24" }}>
+                              Current
+                            </span>
+                          )}
+                        </div>
+                        <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{tech.specialization}</div>
+                      </div>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div style={{ fontSize: 12, color: "#facc15", marginBottom: 4 }}>★ {tech.averageRating.toFixed(1)}</div>
+                        <span style={{
+                          fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 999,
+                          background: tech.isAvailable ? "rgba(52,211,153,0.12)" : "rgba(239,68,68,0.12)",
+                          color:      tech.isAvailable ? "#34d399" : "#f87171",
+                        }}>
+                          {tech.isAvailable ? "Available" : "Unavailable"}
+                        </span>
+                      </div>
                     </div>
                   )
                 })
@@ -697,7 +744,7 @@ export default function AdminInquiryDetailPage() {
                 cursor: selectedTechnician ? "pointer" : "not-allowed",
               }}
             >
-              Confirm Assignment
+              {assignedTechnician ? "Confirm Reassignment" : "Confirm Assignment"}
             </button>
           </div>
         </div>

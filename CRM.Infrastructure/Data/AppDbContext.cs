@@ -149,12 +149,55 @@ public class AppDbContext : DbContext
             entity.Property(c => c.Value).HasMaxLength(200).IsRequired();
         });
         //CustomerAddress
-        modelBuilder.Entity<CustomerAddress>(entity =>{
-            entity.HasKey(c => c.Id);
-            entity.Property(c => c.Label).HasMaxLength(50).IsRequired();
-            entity.Property(c => c.Address).HasMaxLength(200).IsRequired();
-            entity.Property(c => c.IsDefault).HasDefaultValue(false);
-            entity.HasOne(c => c.Customer).WithMany(c => c.CustomerAddresses).HasForeignKey(c => c.CustomerId).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<CustomerAddress>(entity =>
+        {
+        entity.HasKey(c => c.Id);
+
+        entity.Property(c => c.Label)
+            .HasMaxLength(50)
+            .IsRequired();
+
+        entity.OwnsOne(c => c.Address, address =>
+        {
+            address.Property(a => a.Street)
+                .HasColumnName("Street")        // explicit column names
+                .HasMaxLength(200)
+                .IsRequired();
+
+            address.Property(a => a.Street2)
+                .HasColumnName("Street2")
+                .HasMaxLength(200)
+                .IsRequired(false);
+
+            address.Property(a => a.City)
+                .HasColumnName("City")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            address.Property(a => a.State)
+                .HasColumnName("State")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            address.Property(a => a.PostalCode)
+                .HasColumnName("PostalCode")
+                .HasMaxLength(20)
+                .IsRequired();
+
+            address.Property(a => a.Country)
+                .HasColumnName("Country")
+                .HasMaxLength(2)
+                .IsRequired()
+                .HasDefaultValue("PH");
+        });
+
+        entity.Property(c => c.IsDefault)
+            .HasDefaultValue(false);
+
+        entity.HasOne(c => c.Customer)
+            .WithMany(c => c.CustomerAddresses)
+            .HasForeignKey(c => c.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
         });
         //CustomerNote
         modelBuilder.Entity<CustomerNote>(entity =>{

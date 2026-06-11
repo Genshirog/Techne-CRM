@@ -165,7 +165,7 @@ export default function App() {
 
                             <Route path="/customer/jobs/" element={<CustomerMyJobsPage/>}/>
 
-                            <Route path="/customer/inquiries/new" element={<PublicInquiryPage/>}/>
+                            <Route path="/customer/inquiries/new" element={<CreateInquiryPage/>}/>
                             <Route path="/customer/inquiries/" element={<CustomerInquiriesPage/>}/>
                             <Route path="/customer/inquiries/:id" element={<CustomerInquiryDetailPage/>}/>
 
